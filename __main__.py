@@ -25,23 +25,25 @@ def main(argv: List[str]) -> None:
     if args.seed is not None:
         random.seed(args.seed)
 
+    # Run the simulation and process the data
     roll_counts = simulate(args.roll_rule, args.num_iterations)
     data = process_data(roll_counts)
 
-    # data.to_csv(sys.stdout, index=False)
-    print(data)
-
+    # Calculate statistics
     mean = sum(data["value"] * data["percent"] / 100.0)
     mode = data.iloc[data["count"].idxmax()]["value"]
     stddev = math.sqrt(sum(data["percent"] / 100.0 * (data["value"] - mean) ** 2.0))
     skewness = pearson_first_skewness(mean, mode, stddev)
 
+    # Print out result information
+    print(data)
     print()
     print("Mean:", mean)
     print("Mode:", mode)
     print("Standard deviation:", stddev)
     print("Skewness:", skewness)
 
+    # Plot the data
     plot = (
         plt9.ggplot(data, plt9.aes("value", "percent"))
         + plt9.geom_bar(stat="identity")
@@ -59,6 +61,7 @@ def main(argv: List[str]) -> None:
 
 
 def pearson_first_skewness(mean: float, mode: float, stddev: float) -> float:
+    # https://en.wikipedia.org/wiki/Skewness#Pearson's_first_skewness_coefficient_(mode_skewness)
     return (mean - mode) / stddev
 
 
