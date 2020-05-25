@@ -46,7 +46,7 @@ def main(argv: List[str]) -> None:
         plt9.ggplot(data, plt9.aes("value", "percent"))
         + plt9.geom_bar(stat="identity")
         + plt9.geom_vline(xintercept=mean, color="black")
-        + plt9.xlim(0, 20)
+        + plt9.xlim(0, 21)
         + plt9.ylab("Chance (%)")
         + plt9.xlab("Ability Score")
         + plt9.ggtitle(
